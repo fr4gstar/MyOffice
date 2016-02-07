@@ -9,14 +9,55 @@ jQuery(document).ready(function(){
       var counter = 1;
       while(json[counter]){
         jQuery("#contactTable").append(
-          "<tr><td><button id='btn_deleteContact'>-</button></td><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td></tr>"
-        );   
+          "<tr><td><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button></td><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td></tr>"
+        );
+        //init button delete contact
+        var contactID = parseInt(json[counter][counter][0]);
+        jQuery("#btn_deleteContact"+json[counter][counter][0]).click(function(){
+            jQuery.get("deleteContact.php",{
+              cid: contactID  
+            },function(data){
+              console.log(data);
+               if(data == "1"){
+                 updateContacts();
+                 alert("Kontakt erfolgreich gelöscht!");
+                 console.log("Delete contact successfull!");
+               }else{
+                 alert("Kontakt konnte nicht gelöscht werden!");
+                 console.log("Delete contact error!");    
+               }
+            });      
+          });
+          //init button edit contact
+          jQuery("#btn_editContact"+json[counter][counter][0]).click(function(){
+          if(!jQuery("#firstname").val() && !jQuery("#lastname").val() && !jQuery("#firm").val() && !jQuery("#email").val() && !jQuery("#tel").val()){
+            alert("Bitte mindestens Vornamen/Nachnamen/Firma/Email oder Telefonnumer angeben!");
+          }else{
+            jQuery.get("editContact.php",{
+              cid : contactID,
+              firstname : jQuery("#firstname").val(),
+              lastname : jQuery("#lastname").val(),
+              firm : jQuery("#firm").val(),
+              email : jQuery("#email").val(),
+              tel : jQuery("#tel").val(),
+              note : jQuery("#note").val()
+              },function(data){
+                if(data == "1"){
+                  updateContacts();
+                  alert("Kontakt erfolgreich geändert!");
+                  console.log("Edit contact successfull!");
+                }else{
+                  alert("Kontakt konnte nicht verändert werden!");
+                  console.log("ERROR: Edit contact successfull!");
+                }                         
+            });
+          }
+        });    
         counter++;
       }
       console.log("Update Contacts successfull!");  
     });  
   };
-
   jQuery.get("contacts.php",{},function(data){
         //init functions panel
         jQuery("#contacts").append(
@@ -32,15 +73,14 @@ jQuery(document).ready(function(){
         var json = $.parseJSON(data);
         var counter = 1;
         while(json[counter]){
-          console.log(counter);
           jQuery("#contactTable").append(
-            "<tr></td><td><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td><tr>"
+            "<tr id='row_editContact"+json[counter][counter][0]+"'></td><td><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td><tr>"
           );
-          console.log(parseInt(json[counter][counter][0]));
           // delete contact
+          var contactID = parseInt(json[counter][counter][0]);
           jQuery("#btn_deleteContact"+json[counter][counter][0]).click(function(){
             jQuery.get("deleteContact.php",{
-              cid: parseInt(json[counter][counter][0])  
+              cid: contactID  
             },function(data){
                if(data == "1"){
                  updateContacts();
@@ -51,10 +91,39 @@ jQuery(document).ready(function(){
                  console.log("Delete contact error!");    
                }
             });      
-          });  
+          });
+          // edit contact
+          /*jQuery("#btn_editContact"+json[counter][counter][0]).click(function(){
+            
+            if(jQuery("#row_editContact"+json[counter][counter][0]).is("contenteditable='true'")){
+              
+            }
+            console.log(jQuery("#firstname").val());
+            if(!jQuery("#firstname").val() && !jQuery("#lastname").val() && !jQuery("#firm").val() && !jQuery("#email").val() && !jQuery("#tel").val()){
+              alert("Bitte mindestens Vornamen/Nachnamen/Firma/Email oder Telefonnumer angeben!");
+            }else{
+              jQuery.get("editContact.php",{
+                cid : contactID,
+                firstname : jQuery("#firstname").val(),
+                lastname : jQuery("#lastname").val(),
+                firm : jQuery("#firm").val(),
+                email : jQuery("#email").val(),
+                tel : jQuery("#tel").val(),
+                note : jQuery("#note").val()
+                },function(data){
+                  if(data == "1"){
+                    updateContacts();
+                    alert("Kontakt erfolgreich geändert!");
+                    console.log("Edit contact successfull!");
+                  }else{
+                    alert("Kontakt konnte nicht verändert werden!");
+                    console.log("ERROR: Edit contact successfull!");
+                  }                         
+              });
+            }
+          });*/
           counter++;
         }
-        
         // create contact
         jQuery("#createContact").append(
           "Vorname<input id='firstname' type='text'></input>Nachname<input id='lastname' type='text'></input><br/>Firma<input id='firm' type='text'></input>EMail<input id='email' type='email'></input><br/>TelNr.<input id='tel' type='tel'></input>Notiz<input id='note' type='text'></input><br/><button id='btn_createContact'>Kontakt erstellen</button>"          
