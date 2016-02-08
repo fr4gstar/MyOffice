@@ -14,6 +14,8 @@ if(isset($_SESSION['login']) == false){
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="js\contacts.js"></script>
+    <script src="js\notes.js"></script>
+ 
     <link rel="stylesheet" href="css/style.css">
     <meta http-equiv=”expires” content=”0”>
     <meta name=“robots“ content=“noindex“ />
@@ -21,7 +23,7 @@ if(isset($_SESSION['login']) == false){
     <meta charset=”utf-8” />
     <script>
       $(function() {
-        $( "#tabs" ).tabs();
+        $("#tabs").tabs();
       });
     </script>
   </head>
@@ -46,7 +48,7 @@ if(isset($_SESSION['login']) == false){
       <div id="overview"></div>
       <div id="contacts"></div>
       <div id="notes"></div>
-      <div id="taskmanager"></div>
+	<div id="taskmanager"></div>
       <div id="calendar"></div>
     </div>                                                
   </article>

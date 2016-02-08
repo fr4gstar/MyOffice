@@ -2,6 +2,15 @@ table,th,td {
   border: 1px solid black;	
 }
 
+table {
+  width: 500px;
+}
+
+table th, td {
+  overflow: scroll;
+  white-space: nowrap;
+}
+
 #login_mask {
   margin: 100px;
   text-align: center; 
@@ -41,18 +50,31 @@ input {
 article {
   width:1200px;
   margin:5px;
+  overflow: scroll;
 }
 
 #logout {
   float:right;
   width:50px;
   height: 20px;
-  margin:3px
+  margin:3px;
 }
 
-#functionPanel{
-  margin: 3px;
-  border: 1px solid black;
+#tabs_contacts{
+  overflow: scroll;
+  width: 1150px;
+  margin: 0px;
 }
 
+#notesPanel{
+  width: 1050px;
+  margin: 0px;
+  overflow: scroll;
+}
 
+.portlet{
+  width: 150px;
+  height: 150px;
+  float: left;
+  overflow: scroll;
+}

@@ -3,13 +3,13 @@ jQuery(document).ready(function(){
     jQuery.get("contacts.php",{},function(data){
       jQuery("#showContacts").empty();
       jQuery("#showContacts").append(
-        "<table id='contactTable' href='#'><tr><th></th><th>ID</th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>TelNr.</th><th>Notiz</th></tr></table>"
+        "<table id='contactTable' href='#'><tr><th></th><th>ID</th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>TelNr.</th></tr></table>"
       );
       var json = $.parseJSON(data);
       var counter = 1;
       while(json[counter]){
         jQuery("#contactTable").append(
-          "<tr><td><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button></td><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td></tr>"
+          "<tr><td><button id='btn_viewContact"+json[counter][counter][0]+"'>*</button><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button></td><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td></tr>"
         );
         //init button delete contact
         var contactID = parseInt(json[counter][counter][0]);
@@ -68,13 +68,13 @@ jQuery(document).ready(function(){
         });
         // show Contacts tab
         jQuery("#showContacts").append(
-          "<table id='contactTable' href='#'><tr><th></th><th>ID</th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>TelNr.</th><th>Notiz</th></tr></table>"
+          "<table id='contactTable' href='#'><tr><th></th><th>ID</th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>TelNr.</th></tr></table>"
         );
         var json = $.parseJSON(data);
         var counter = 1;
         while(json[counter]){
           jQuery("#contactTable").append(
-            "<tr id='row_editContact"+json[counter][counter][0]+"'></td><td><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><td>"+json[counter][counter][6]+"</td><tr>"
+            "<tr id='row_editContact"+json[counter][counter][0]+"'></td><td><button id='btn_viewContact"+json[counter][counter][0]+"'>*</button><button id='btn_deleteContact"+json[counter][counter][0]+"'>-</button><button id='btn_editContact"+json[counter][counter][0]+"'>/</button><td>"+json[counter][counter][0]+"</td><td>"+json[counter][counter][1]+"</td><td>"+json[counter][counter][2]+"</td><td>"+json[counter][counter][3]+"</td><td>"+json[counter][counter][4]+"</td><td>"+json[counter][counter][5]+"</td><tr>"
           );
           // delete contact
           var contactID = parseInt(json[counter][counter][0]);
@@ -122,11 +122,11 @@ jQuery(document).ready(function(){
               });
             }
           });*/
-          counter++;
+          counter++;                                                             
         }
         // create contact
         jQuery("#createContact").append(
-          "Vorname<input id='firstname' type='text'></input>Nachname<input id='lastname' type='text'></input><br/>Firma<input id='firm' type='text'></input>EMail<input id='email' type='email'></input><br/>TelNr.<input id='tel' type='tel'></input>Notiz<input id='note' type='text'></input><br/><button id='btn_createContact'>Kontakt erstellen</button>"          
+          "Vorname<input id='firstname' type='text'></input>Nachname<input id='lastname' type='text'></input>Firma<input id='firm' type='text'></input><br/>EMail<input id='email' type='email'></input>TelNr.<input id='tel' type='tel'></input><br/>Notiz<br/><textarea id='note' type='text' cols='40' rows='5'></textarea><br/><button id='btn_createContact'>Kontakt erstellen</button>"          
         );
         jQuery("#btn_createContact").click(function(){
           if(!jQuery("#firstname").val() && !jQuery("#lastname").val() && !jQuery("#firm").val() && !jQuery("#email").val() && !jQuery("#tel").val()){
