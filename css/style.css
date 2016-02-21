@@ -39,7 +39,7 @@ input {
   margin: 10px;
 }
 
-#header {
+header, footer {
   margin:5px;
   border:2px solid black;
   width:1200px;
@@ -47,10 +47,15 @@ input {
   overflow: auto;
 }
 
+footer{
+  text-align: center;
+}
+
 article {
   width:1200px;
   margin:5px;
-  overflow: scroll;
+  overflow: hidden;
+  float: none;
 }
 
 #logout {
@@ -61,7 +66,7 @@ article {
 }
 
 #tabs_contacts{
-  overflow: scroll;
+  overflow: hidden;
   width: 1150px;
   margin: 0px;
 }
@@ -77,4 +82,82 @@ article {
   height: 150px;
   float: left;
   overflow: scroll;
+}
+
+table {
+  font-size: 12px; 
+}
+
+#overview {
+  width: 1200px;
+  height: 650px;
+  overflow: hidden;
+}
+
+ov_block {
+  width: 850px;
+  height: 850px;
+  float: left;
+  margin: 2px;
+  border: 2px solid black;
+}
+ov_line {
+  width: 250px;
+  height: 250px;
+  float: left;
+  margin: 2px;
+  border: 2px solid black;
+}
+
+.overview_block {
+  width: 400px;
+  height: 400px;
+  float: left;
+  border: 2px solid black;
+  margin: 2px;
+}
+
+.overview_line {
+  width: 250px;
+  height: 600px;
+  float: left;
+  border:2px solid black;
+  margin: 2px;
+}
+
+#ov_header {
+  width: 1100px;
+  height: 30px;
+  font-size: 25px;
+  margin: 2px;
+  border: 2px solid black;
+}
+
+textarea {
+  resize: none;
+}
+
+.btn_delete {
+  background-color: red;
+  color: white;  
+}
+
+.btn_delete.notes {
+  background-color: red;
+  color: white;
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+  float: left;
+  font-size: 10px;  
+}
+
+.opener {
+  background-color: blue;
+  color: white;  
+}
+
+.btn_add {
+  background-color: green;
+  color: white;  
 }

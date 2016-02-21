@@ -1,15 +1,15 @@
 <!Doctype html>
 <html>
   <head>
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="js/fullcalendar-2.6.0/lib/jquery.min.js" type="text/javascript"></script>
     <script src="js/login.js" type="text/javascript"></script>
     <script src="js/register.js" type="text/javascript"></script>
     <script src="js/jquery.cookie.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/style.css">
-    <meta http-equiv=”expires” content=”0”>
-    <meta name=“robots“ content=“noindex“ />
-    <meta name=“description“ content=“Office Web-Application with Contacts, Calendar, Task-Manager and Notes“ />
-    <meta charset=”utf-8” />
+    <meta http-equiv="expires" content="0">
+    <meta name="robots" content="index" />
+    <meta name="description" content="Office Web-Application with Contacts, Calendar, Task-Manager and Notes" />
+    <meta charset="utf-8" />
   </head>
   
   <header></header>
