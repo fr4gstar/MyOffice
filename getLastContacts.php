@@ -7,7 +7,7 @@
       if(!$conn)
           die("Verbindung zur DB kann nicht hergestellt werden!");
       mysql_select_db("myOffice") or die("Datenbank existiert nicht!");
-
+      
       $sql1 = "Select cid from rel_user_contact where uid=(SELECT id from USER where email ='".$_SESSION['email']."');";
       $res1 = mysql_query($sql1) or die("SQL STMT ".$sql1." fehlerhaft");
       $contacts = [];
@@ -21,6 +21,14 @@
           $counter ++;
         }
       }
+      /*
+      // if needed - SQL QUERY: last 5 entries 
+      SELECT * FROM (
+        SELECT * FROM Customers ORDER BY CustomerID DESC LIMIT 5
+      ) sub
+      ORDER BY CustomerID ASC
+      */
+      
       echo json_encode($contacts);
       mysql_close($conn);
     }
