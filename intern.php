@@ -25,11 +25,11 @@ if(isset($_SESSION['login']) == false){
     <script src="js/fullcalendar-2.6.0/fullcalendar.min.js"></script>
     <script src='js/fullcalendar-2.6.0/lang/de.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
+    <script src="js/overview.js"></script>
     <script src="js/contacts.js"></script>
     <script src="js/notes.js"></script>
     <script src="js/tasks.js"></script>
-    <script src="js/calendar.js"></script>    
-    <script src="js/overview.js"></script>
+    <script src="js/calendar.js"></script>
   </head>
   <header>
     <div id="header"> 
