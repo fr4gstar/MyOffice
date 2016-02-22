@@ -50,7 +50,7 @@ if(isset($_SESSION['login']) == false){
       <div id="overview"></div>
       <div id="contacts"></div>
       <div id="notes"></div>
-	    <div id="tasks"></div>
+      <div id="tasks"></div>
       <div id="calendar"></div>
     </div>                                                
   </article>
