@@ -65,8 +65,8 @@ jQuery(document).ready(function(){
         }else{
           noteTeaser = note;  
         }
-        dialogHTML += "<div id='dialog"+taskID+"' class='dialog'><form><fieldset><label for='t_title'>Titel</label><input type='text' name='Titel' id='t_title"+taskID+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='t_description"+taskID+"'>Beschreibung</label><br /><textarea name='description' id='t_description"+taskID+"' type='text' cols='40' rows='5' class='text ui-widget-content ui-corner-all'>"+description+"</textarea><br /><label for='t_note"+taskID+"'>Notiz</label><br /><textarea name='note' id='t_note"+taskID+"' type='text' cols='40' rows='5' class='text ui-widget-content ui-corner-all'>"+note+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form><div id='timer"+taskID+"' class='timer'></div></div>";
-        tableContentHTML += "<tr><td><button id='btn_viewTask"+taskID+"' class='opener' data-note='"+note+"' data-time='"+elapsedTime+"'data-id='#dialog"+taskID+"'>Bearbeiten</button><button id='btn_deleteTask"+taskID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+title+"</td><td>"+descriptionTeaser+"</td><td>"+note+"</td><td>"+elapsedTime+"</td></tr>";        
+        dialogHTML += "<div id='dialog_t"+taskID+"' class='dialog'><form><fieldset><label for='t_title'>Titel</label><input type='text' name='Titel' id='t_title"+taskID+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='t_description"+taskID+"'>Beschreibung</label><br /><textarea name='description' id='t_description"+taskID+"' type='text' cols='40' rows='5' class='text ui-widget-content ui-corner-all'>"+description+"</textarea><br /><label for='t_note"+taskID+"'>Notiz</label><br /><textarea name='note' id='t_note"+taskID+"' type='text' cols='40' rows='5' class='text ui-widget-content ui-corner-all'>"+note+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form><div id='timer"+taskID+"' class='timer'></div></div>";
+        tableContentHTML += "<tr><td><button id='btn_viewTask"+taskID+"' class='opener' data-note='"+note+"' data-time='"+elapsedTime+"'data-id='#dialog_t"+taskID+"'>Bearbeiten</button><button id='btn_deleteTask"+taskID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+title+"</td><td>"+descriptionTeaser+"</td><td>"+note+"</td><td>"+elapsedTime+"</td></tr>";        
         counter++;
       };
       jQuery("#taskTable").append(tableContentHTML);
@@ -98,7 +98,7 @@ jQuery(document).ready(function(){
       }); 
       $(".opener").click(function () {
         var id = $(this).data('id');
-        var tid = id.toString().substring(7, id.toString().length);
+        var tid = id.toString().substring(9, id.toString().length);
         var note = $(this).data('note');
         // init timer at dialog
         var clock = $('#timer'+tid).FlipClock({
@@ -140,12 +140,41 @@ jQuery(document).ready(function(){
                }
         });
         $(id).dialog("open");
-      });   
+      });
+      // init overview task data
+      var lastTask = Object.keys(json).length;
+      var overviewHtml = "";
+      var descTeaser = "";
+      if(lastTask < 5){
+        for(var i = 0;i < lastTask ; i++){
+          if(json[lastTask][lastTask][2].toString().length > 20){
+            descTeaser = json[lastTask][lastTask][2].toString().substring(0, 20);
+            descTeaser += "...";
+          }else{
+            descTeaser = json[lastTask][lastTask][2];
+          }  
+          overviewHtml += "<tr><td>"+json[lastTask][lastTask][1]+"</td><td>"+descTeaser+"</td><td>"+json[lastTask][lastTask][4]+"</td></tr>";
+          lastTask--;
+        };
+      }else{
+        for(var i = 0;i < 5 ; i++){
+          if(json[lastTask][lastTask][2].toString().length > 20){
+            descTeaser = json[lastTask][lastTask][2].toString().substring(0, 20);
+            descTeaser += "...";
+          }else{
+            descTeaser = json[lastTask][lastTask][2];
+          }  
+          overviewHtml += "<tr><td>"+json[lastTask][lastTask][1]+"</td><td>"+descTeaser+"</td><td>"+json[lastTask][lastTask][4]+"</td></tr>";
+          lastTask--;
+        };
+      }
+      jQuery("#ov_taskTable").append(overviewHtml);    
   };
   
   function updateTasks(){
     jQuery.get("tasks.php",{},function(data){
       jQuery("#showTasks").empty();
+      jQuery("#ov_taskTable").empty();
       createTasks(data);
       console.log("Update task successfull!");  
     });  

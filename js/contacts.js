@@ -31,8 +31,6 @@ jQuery(document).ready(function(){
       );
       var json = $.parseJSON(data);
       var counter = 1;
-      //var dialogHTML = "<div id='dialog-form'><form></form></div>";
-      //jQuery("#showContacts").append(dialogHTML);
       var dialogHTML = "";
       var tableContentHTML = "";
       //create/parse HTML  dialog and tableContent 
@@ -44,8 +42,8 @@ jQuery(document).ready(function(){
         var email = json[counter][counter][4];
         var tel = json[counter][counter][5];
         var note = json[counter][counter][6];
-        dialogHTML += "<div id='dialog"+contactID+"' class='dialog'><form><fieldset><label for='f_firstname'>Vorname</label><input type='text' name='firstname' id='f_firstname"+contactID+"' value='"+firstname+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_lastname'>Nachname</label><input type='text' name='lastname' id='f_lastname"+contactID+"' value='"+lastname+"' class='text ui-widget-content ui-corner-all'><br /><label for='company'>Firma</label><input type='text' name='company' id='f_company"+contactID+"' value='"+company+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_email'>Email</label><input type='text' name='email' id='f_email"+contactID+"' value='"+email+"' class='text ui-widget-content ui-corner-all'><br /><label for='tel'>Telefonnummer</label><input type='text' name='f_tel' id='f_tel"+contactID+"' value='"+tel+"' class='text ui-widget-content ui-corner-all'><br /><label for='note'>Notiz</label><br /><textarea name='note' id='f_note"+contactID+"' type='text' cols='40' rows='7' class='text ui-widget-content ui-corner-all'>"+note+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form></div>";
-        tableContentHTML += "<tr><td><button id='btn_viewContact"+contactID+"' class='opener' data-id='#dialog"+contactID+"'>Bearbeiten</button><button id='btn_deleteContact"+contactID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+firstname+"</td><td>"+lastname+"</td><td>"+company+"</td><td>"+email+"</td><td>"+tel+"</td></tr>";
+        dialogHTML += "<div id='dialog_c"+contactID+"' class='dialog'><form><fieldset><label for='f_firstname'>Vorname</label><input type='text' name='firstname' id='f_firstname"+contactID+"' value='"+firstname+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_lastname'>Nachname</label><input type='text' name='lastname' id='f_lastname"+contactID+"' value='"+lastname+"' class='text ui-widget-content ui-corner-all'><br /><label for='company'>Firma</label><input type='text' name='company' id='f_company"+contactID+"' value='"+company+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_email'>Email</label><input type='text' name='email' id='f_email"+contactID+"' value='"+email+"' class='text ui-widget-content ui-corner-all'><br /><label for='tel'>Telefonnummer</label><input type='text' name='f_tel' id='f_tel"+contactID+"' value='"+tel+"' class='text ui-widget-content ui-corner-all'><br /><label for='note'>Notiz</label><br /><textarea name='note' id='f_note"+contactID+"' type='text' cols='40' rows='7' class='text ui-widget-content ui-corner-all'>"+note+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form></div>";
+        tableContentHTML += "<tr><td><button id='btn_viewContact"+contactID+"' class='opener' data-id='#dialog_c"+contactID+"'>Bearbeiten</button><button id='btn_deleteContact"+contactID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+firstname+"</td><td>"+lastname+"</td><td>"+company+"</td><td>"+email+"</td><td>"+tel+"</td></tr>";
         counter++;
       };
       jQuery("#contactTable").append(tableContentHTML);
@@ -76,13 +74,13 @@ jQuery(document).ready(function(){
       }); 
       $(".opener").click(function () {
         var id = $(this).data('id');
-        var cid = id.toString().substring(7, id.toString().length);
+        var cid = id.toString().substring(9, id.toString().length);
         $(".dialog").dialog({
           autoOpen: false,
           height: 600,
           width: 700,
           modal: true,
-          title: "Kontakt #"+cid +" anpassen", 
+          title: "Kontakt anpassen", 
           buttons: {
               "Speichern": function(){
                   editContact(cid);
@@ -94,11 +92,28 @@ jQuery(document).ready(function(){
         });
         $(id).dialog("open");
       });
+      var lastContact = Object.keys(json).length;
+      var overviewHtml = "";
+      if(lastContact < 5){
+        for(var i = 0;i < lastEvent ; i++){
+          overviewHtml += "<tr><td>"+json[lastContact][lastContact][1]+"</td><td>"+json[lastContact][lastContact][2]+"</td><td>"+json[lastContact][lastContact][3]+"</td><td>"+json[lastContact][lastContact][4]+"</td><td>"+json[lastContact][lastContact][5]+"</td></tr>";
+          lastContact--;
+        }
+      } else {
+        for(var i = 0;i < 5 ; i++){  
+          overviewHtml += "<tr><td>"+json[lastContact][lastContact][1]+"</td><td>"+json[lastContact][lastContact][2]+"</td><td>"+json[lastContact][lastContact][3]+"</td><td>"+json[lastContact][lastContact][4]+"</td><td>"+json[lastContact][lastContact][5]+"</td></tr>";
+          lastContact--;
+        };
+      }
+      
+      
+      jQuery("#ov_contactTable").append(overviewHtml);
   };
   
   function updateContacts(){
     jQuery.get("contacts.php",{},function(data){
       jQuery("#showContacts").empty();
+      jQuery("#ov_contactTable").empty();
       createContacts(data);
       console.log("Update Contacts successfull!");  
     });  

@@ -23,6 +23,7 @@ jQuery(document).ready(function(){
   function updateNotes(){
     jQuery.get("Notes.php",{},function(data){
       jQuery("#showNotes").empty();
+      jQuery("#ov_noteTable").empty();
       createNotes(data);
       console.log("Update notes successfull!");  
     });  
@@ -115,7 +116,7 @@ jQuery(document).ready(function(){
         height: 600,
         width: 700,
         modal: true,
-        title: "Notiz #"+nid +" anpassen", 
+        title: "Notiz anpassen", 
         buttons: {
             "Speichern": function(){
                 editNote(nid);
@@ -127,6 +128,34 @@ jQuery(document).ready(function(){
       });
       $(id).dialog("open");
     });
+    // init note data for overview
+    var lastNote = Object.keys(json).length;
+    var overviewHtml = "";
+    var descTeaser = "";
+    if(lastNote < 5){
+      for(var i = 0;i < lastNote ; i++){
+         if(json[lastNote][lastNote][2].toString().length > 20){
+          descTeaser = json[lastNote][lastNote][2].toString().substring(0, 20);
+          descTeaser += "...";
+        }else{
+          descTeaser = json[lastNote][lastNote][2];
+        }  
+        overviewHtml += "<tr><td>"+json[lastNote][lastNote][1]+"</td><td>"+descTeaser+"</td></tr>";
+        lastNote--;
+      };
+    } else {
+      for(var i = 0;i < 5 ; i++){
+         if(json[lastNote][lastNote][2].toString().length > 20){
+          descTeaser = json[lastNote][lastNote][2].toString().substring(0, 20);
+          descTeaser += "...";
+        }else{
+          descTeaser = json[lastNote][lastNote][2];
+        }  
+        overviewHtml += "<tr><td>"+json[lastNote][lastNote][1]+"</td><td>"+descTeaser+"</td></tr>";
+        lastNote--;
+      };
+    }
+    jQuery("#ov_noteTable").append(overviewHtml);
   };
   jQuery.get("notes.php",{},function(data){
         //init functions panel
