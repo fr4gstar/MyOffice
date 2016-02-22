@@ -3,7 +3,7 @@ table,th,td {
 }
 
 table {
-  width: 500px;
+  //width: 500px;
 }
 
 table th, td {
@@ -43,7 +43,7 @@ header, footer {
   margin:5px;
   border:2px solid black;
   width:1200px;
-  height:30px;
+  height:25px;
   overflow: auto;
 }
 
@@ -74,14 +74,14 @@ article {
 #notesPanel{
   width: 1050px;
   margin: 0px;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .portlet{
   width: 150px;
   height: 150px;
   float: left;
-  overflow: scroll;
+  overflow: auto;
 }
 
 table {
@@ -160,4 +160,20 @@ textarea {
 .btn_add {
   background-color: green;
   color: white;  
+}
+
+.timer {
+  float: none;
+  margin: 20px;
+  width: 500px;
+}
+
+#btn_stop_timer, #btn_start_timer {
+  width: 75px;
+  height: 30px;
+  float: none;
+}
+
+.dialog {
+  overflow: hidden;
 }

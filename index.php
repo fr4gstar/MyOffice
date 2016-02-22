@@ -9,10 +9,10 @@
     <meta http-equiv="expires" content="0">
     <meta name="robots" content="index" />
     <meta name="description" content="Office Web-Application with Contacts, Calendar, Task-Manager and Notes" />
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
   </head>
   
-  <header></header>
+  <header>My Office - Web Anwendung</header>
   
   <article>
     <div id="login_mask">
@@ -33,7 +33,7 @@
       <input id="lastname" type="text"></input>
       Geschlecht:<br>
       <input type="radio" name="gender" value ="f">weiblich</input>
-      <input type="radio" name="gender" value ="m">männlich</input>
+      <input type="radio" name="gender" value ="m">m&auml;nnlich</input>
       Password#1:
       <input id="password" type="password"></input>
       Password#2:
@@ -41,8 +41,8 @@
       eMail:
       <input id="email" type="text"></input>
       <select id="country" name="country">
-        <option value="none" selected>Land auswählen</option>
-        <option value="Österreich">Österreich</option>
+        <option value="none" selected>Land ausw&auml;hlen</option>
+        <option value="Österreich">&Ouml;sterreich</option>
         <option value="Schweiz">Schweiz</option>
         <option value="Deutschland">Deutschland</option>
         <option value="Niederlande">Niederlande</option>
@@ -52,5 +52,7 @@
       <button id="reg_submit" type="button">Anmelden</button>
     </div>
   </article>
-  <footer></footer>
+  <footer>
+    &copy; 2016 Hochschule M&uuml;nchen - Web-Techniken - Sergej Bardin
+  </footer>
 </html>

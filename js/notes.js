@@ -1,4 +1,25 @@
 jQuery(document).ready(function(){
+  function editNote(noteID){
+    if(!jQuery("#f_title"+noteID).val()){
+      alert("Bitte mindestens einen Titel angeben!");
+    }else{
+      jQuery.get("editNote.php",{
+        nid : noteID,
+        title : jQuery("#f_title"+noteID).val(),
+        description : jQuery("#f_description"+noteID).val()
+        },function(data){
+        if(data == "1"){
+          updateNotes();
+          alert("Notiz erfolgreich angepasst!");
+          console.log("Edit note successfull!");
+        }else{
+          updateNotes();
+          alert("Notiz konnte nicht angepasst werden!");
+          console.log("ERROR: Edit note failed!");
+        }                         
+      });
+    }
+  };
   function updateNotes(){
     jQuery.get("Notes.php",{},function(data){
       jQuery("#showNotes").empty();
@@ -9,6 +30,12 @@ jQuery(document).ready(function(){
   function createNotes(data){
     var json = $.parseJSON(data);
     var counter = 1;
+    var dialogHTML = "";
+    var notePanelContentHTML = "";
+    // show notes tab
+      jQuery("#showNotes").append(
+        "<div id='notesPanel'></div>"
+      );
     while(json[counter]){
       var nid = json[counter][counter][0];
       var title = json[counter][counter][1];
@@ -27,22 +54,21 @@ jQuery(document).ready(function(){
       }else{
         teaser = description;
       }
-      // show notes tab
-      jQuery("#showNotes").append(
-        "<div id='notesPanel'></div>"
-      ); 
-      jQuery("#notesPanel").append(
-        "<div class='column'><div class='portlet'><div class='portlet-header'><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button>"+title_teaser+"</div><div class='portlet-content'>"+teaser+"</div></div></div>"
-      );
-      // delete note
-      jQuery("#btn_deleteNote"+nid).click(function(){
+      dialogHTML += "<div id='dialog_n"+nid+"' class='dialog'><form><fieldset><label for='f_title'>Titel</label><input type='text' name='title' id='f_title"+nid+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='note'>Beschreibung</label><br /><textarea name='note' id='f_description"+nid+"' type='text' cols='40' rows='15' class='text ui-widget-content ui-corner-all'>"+description+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form></div>"; 
+      notePanelContentHTML += "<div class='column'><div class='portlet'><div class='portlet-header'><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button><div class='opener' data-id='#dialog_n"+nid+"'>"+title_teaser+"</div></div><div class='portlet-content'>"+teaser+"</div></div></div>"
+      counter++;                                                             
+    };
+    jQuery("#notesPanel").append(notePanelContentHTML);
+    jQuery("#showNotes").append(dialogHTML);
+    counter = 1;
+    // init delete note
+    while(json[counter]){
+      jQuery("#btn_deleteNote"+json[counter][counter][0]).click(function(){
           var id = $(this).attr('id');
           id = id.toString().substring(14, id.toString().length);
-          console.log(id);
           jQuery.get("deleteNote.php",{
             nid: id  
           },function(data){
-             console.log(data);
              if(data == "1"){
                updateNotes();
                alert("Notiz erfolgreich entfernt!");
@@ -53,8 +79,9 @@ jQuery(document).ready(function(){
              }
           });      
         });
-      counter++;                                                             
-    }
+        counter ++;
+    };
+    // init portlets
     $(function() {
         $( ".column" ).sortable({
           connectWith: ".column",
@@ -76,6 +103,30 @@ jQuery(document).ready(function(){
         });
       }
     );
+    // init dialog forms
+    $(".dialog").dialog({
+        autoOpen: false
+    }); 
+    $(".opener").click(function () {
+      var id = $(this).data('id');
+      var nid = id.toString().substring(9, id.toString().length);
+      $(".dialog").dialog({
+        autoOpen: false,
+        height: 600,
+        width: 700,
+        modal: true,
+        title: "Notiz #"+nid +" anpassen", 
+        buttons: {
+            "Speichern": function(){
+                editNote(nid);
+                $(".dialog").dialog('close');
+                }
+             },
+             close: function() {
+             }
+      });
+      $(id).dialog("open");
+    });
   };
   jQuery.get("notes.php",{},function(data){
         //init functions panel
@@ -86,9 +137,9 @@ jQuery(document).ready(function(){
           $( "#tabs_notes" ).tabs();
         });
         createNotes(data);
-        // create note
+        // create note tab
         jQuery("#createNote").append(
-          "Titel<input id='title' type='text'><br/>Beschreibung<br/><textarea id='description' type='text' cols='40' rows='5'></textarea><br/><button id='btn_createNote' class='btn_add'>Notiz erstellen</button>"          
+          "Titel<input id='title' type='text'><br/>Beschreibung<br/><textarea id='description' type='text' cols='40' rows='15'></textarea><br/><button id='btn_createNote' class='btn_add'>Notiz erstellen</button>"          
         );
         jQuery("#btn_createNote").click(function(){
           if(!jQuery("#title").val()){
