@@ -20,9 +20,9 @@
             $uid = $row['uid'];
           }
           if($uid == $_SESSION['uid']){
-          $sql_insert_event = "UPDATE event SET `title`='".$title."', `description`='".$description."', `startDate`='".$start."',`endDate`='".$end."' WHERE id='".$eid."'";
-          $res_insert_event = mysql_query($sql_insert_event) or die("SQL STMT ".$sql_insert_event." fehlerhaft");
-          echo 1;
+            $sql_insert_event = "UPDATE event SET `title`='".$title."', `description`='".$description."', `startDate`='".$start."',`endDate`='".$end."' WHERE id='".$eid."'";
+            $res_insert_event = mysql_query($sql_insert_event) or die("SQL STMT ".$sql_insert_event." fehlerhaft");
+            echo 1;
           } else {
             echo 0;
           }  

@@ -18,7 +18,8 @@ jQuery(document).ready(function(){
           country: jQuery("#country").val()
           },function(data){
               if(data == 1){
-                window.location.href = "intern.php";
+                alert("Erfolgreich registriert!");
+                //window.location.href = "intern.php";
               }
               else{
                 alert(data);

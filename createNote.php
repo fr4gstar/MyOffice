@@ -3,7 +3,7 @@
   if(isset($_SESSION['login']) == false){
     die("Du bist nicht eingeloggt");
   }else{
-      if(isset($_GET['title']) AND isset($_GET['description']) AND (strlen($_GET['title']) > 0)) {
+      if(isset($_GET['title']) AND isset($_GET['description']) AND (strlen($_GET['title']) > 0) AND (strlen($_GET['title']) <= 40) AND (strlen($_GET['description']) <= 2000)) {
         $title = mysql_real_escape_string($_GET['title']);
         $description = mysql_real_escape_string($_GET['description']);
         $conn = mysql_connect("localhost", "root", "");

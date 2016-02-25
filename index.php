@@ -1,17 +1,25 @@
+<?php
+session_start();
+if(isset($_SESSION['login']) == true){
+  header('Location: intern.php');
+}else{
+?>
+
 <!Doctype html>
 <html>
   <head>
-    <script src="js/fullcalendar-2.6.0/lib/jquery.min.js" type="text/javascript"></script>
-    <script src="js/login.js" type="text/javascript"></script>
-    <script src="js/register.js" type="text/javascript"></script>
-    <script src="js/jquery.cookie.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8" />
     <meta http-equiv="expires" content="0">
     <meta name="robots" content="index" />
     <meta name="title" content="MyOffice">
     <meta name="description" content="Office Web-Application with Contacts, Calendar, Task-Manager and Notes" />
     <link rel="canonical" href="http://localhost/myoffice" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="js/login.min.js" type="text/javascript"></script>
+    <script src="js/register.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/styles.min.css">
+    <title>MyOffice</title>
   </head>
   
   <header>My Office - Web Anwendung</header>
@@ -33,9 +41,8 @@
       <input id="firstname" type="text"></input>
       Nachname:
       <input id="lastname" type="text"></input>
-      Geschlecht:<br>
-      <input type="radio" name="gender" value ="f">weiblich</input>
-      <input type="radio" name="gender" value ="m">m&auml;nnlich</input>
+      <input type="radio" name="gender" value ="f">Weiblich</input>
+      <input type="radio" name="gender" value ="m">M&auml;nnlich</input><br />
       Password#1:
       <input id="password" type="password"></input>
       Password#2:
@@ -44,7 +51,7 @@
       <input id="email" type="text"></input>
       <select id="country" name="country">
         <option value="none" selected>Land ausw&auml;hlen</option>
-        <option value="Österreich">&Ouml;sterreich</option>
+        <option value="Oesterreich">&Ouml;sterreich</option>
         <option value="Schweiz">Schweiz</option>
         <option value="Deutschland">Deutschland</option>
         <option value="Niederlande">Niederlande</option>
@@ -58,3 +65,6 @@
     &copy; 2016 Hochschule M&uuml;nchen - Web-Techniken - Sergej Bardin
   </footer>
 </html>
+<?php
+}
+?>

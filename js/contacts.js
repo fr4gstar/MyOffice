@@ -27,7 +27,7 @@ jQuery(document).ready(function(){
       
   function createContacts(data){
       jQuery("#showContacts").append(
-        "<table id='contactTable' href='#'><tr><th></th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>Telefonnummer</th></tr></table>"
+        "<table id='contactTable' href='#'><tr><th></th><th>#</th><th>Vorname</th><th>Nachname</th><th>Firma</th><th>Email</th><th>Telefonnummer</th></tr></table>"
       );
       var json = $.parseJSON(data);
       var counter = 1;
@@ -45,7 +45,7 @@ jQuery(document).ready(function(){
         var tel = json[counter][counter][5];
         var note = json[counter][counter][6];
         dialogHTML += "<div id='dialog_c"+contactID+"' class='dialog'><form><fieldset><label for='f_firstname"+contactID+"'>Vorname</label><input type='text' name='firstname' id='f_firstname"+contactID+"' value='"+firstname+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_lastname"+contactID+"'>Nachname</label><input type='text' name='lastname' id='f_lastname"+contactID+"' value='"+lastname+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_company"+contactID+"'>Firma</label><input type='text' name='company' id='f_company"+contactID+"' value='"+company+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_email'>Email</label><input type='text' name='email' id='f_email"+contactID+"' value='"+email+"' class='text ui-widget-content ui-corner-all'><br /><label for='tel'>Telefonnummer</label><input type='tel' name='f_tel' id='f_tel"+contactID+"' value='"+tel+"' class='text ui-widget-content ui-corner-all'><br /><label for='note'>Notiz</label><br /><textarea name='note' id='f_note"+contactID+"' type='text' cols='40' rows='7' class='text ui-widget-content ui-corner-all'>"+note+"</textarea></fieldset></form></div>";
-        tableContentHTML += "<tr><td><button id='btn_viewContact"+contactID+"' class='opener' data-id='#dialog_c"+contactID+"'>Bearbeiten</button><button id='btn_deleteContact"+contactID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+firstname+"</td><td>"+lastname+"</td><td>"+company+"</td><td>"+email+"</td><td>"+tel+"</td></tr>";
+        tableContentHTML += "<tr><td><button id='btn_viewContact"+contactID+"' class='opener' data-id='#dialog_c"+contactID+"'>Bearbeiten</button><button id='btn_deleteContact"+contactID+"' class='btn_delete'>L&ouml;schen</button></td><td>"+counter+"</td><td>"+firstname+"</td><td>"+lastname+"</td><td>"+company+"</td><td>"+email+"</td><td>"+tel+"</td></tr>";
         counter++;
       };
       jQuery("#contactTable").append(tableContentHTML);
@@ -118,7 +118,6 @@ jQuery(document).ready(function(){
     jQuery.get("contacts.php",{},function(data){
       jQuery("#showContacts").empty();
       jQuery("#ov_contacts").empty();
-      //$(".opener").click(false);
       createContacts(data);
       console.log("Update Contacts successfull!");  
     });  
@@ -136,7 +135,7 @@ jQuery(document).ready(function(){
         createContacts(data);
         // init create contact form and button function
         jQuery("#createContact").append(
-          "<form>Vorname<input id='firstname' maxlength='40' type='text'></input>Nachname<input id='lastname' maxlength='40' type='text'></input>Firma<input id='firm' maxlength='40' type='text'></input><br/>EMail<input id='email' maxlength='40' type='email' placeholder='G&uuml;ltige E-Mail Adresse angeben!'></input>TelNr.<input id='tel' type='tel' maxlength='40'></input><br/>Notiz<br/><textarea id='note' type='text' cols='40' rows='7' maxlength='2000'></textarea><br/><button id='btn_createContact' class='btn_add'>Kontakt erstellen</button></form>"          
+          "Vorname<input id='firstname' maxlength='40' type='text'></input>Nachname<input id='lastname' maxlength='40' type='text'></input>Firma<input id='firm' maxlength='40' type='text'></input><br/>EMail<input id='email' maxlength='40' type='email' placeholder='G&uuml;ltige E-Mail Adresse angeben!'></input>TelNr.<input id='tel' type='tel' maxlength='40'></input><br/>Notiz<br/><textarea id='note' type='text' cols='40' rows='7' maxlength='2000'></textarea><br/><button id='btn_createContact' class='btn_add'>Kontakt erstellen</button>"          
         );    
         jQuery("#btn_createContact").click(function(){
           if(!jQuery("#firstname").val() && !jQuery("#lastname").val() && !jQuery("#firm").val() && !jQuery("#email").val() && !jQuery("#tel").val()){

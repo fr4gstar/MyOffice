@@ -1,6 +1,5 @@
 jQuery(document).ready(function(){
   jQuery("#login_submit").click(function(){
-    //console.log("Benutzername: " + jQuery("#login_email").val() + " Password:" + jQuery("#login_password").val());
     jQuery.get("login.php",{
       email : jQuery("#login_email").val(),
       password :  jQuery("#login_password").val()
@@ -13,17 +12,23 @@ jQuery(document).ready(function(){
             }
             window.location.href = "intern.php";
           }else{
-            setCookieLoginCounter(data[46]);
-            jQuery("#login_mask").append("<div id='lastCounter' href='#'>"+$.cookie('loginCounter')+"</div>");
+            setCookieLoginCounter(data[39]);
+            jQuery("#lastCounter").empty();
+            jQuery("#lastCounter").append($.cookie('loginCounter'));
             alert(data);
           }
         }else{
-            setCookieLoginCounter(data[46]);
-            jQuery("#login_mask").append("<div id='lastCounter' href='#'>"+$.cookie('loginCounter')+"</div>");
+            setCookieLoginCounter(data[39]);
+            jQuery("#lastCounter").empty();
+            jQuery("#lastCounter").append($.cookie('loginCounter'));
             alert("Benutzername/Kennwort ist nicht angegeben!");
           }     
       });
   });
+  
+  function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
   
   function setCookieLastLogin(){
     var date = new Date();  
@@ -32,7 +37,10 @@ jQuery(document).ready(function(){
   };
   
   function setCookieLoginCounter(counter){
-    $.cookie('loginCounter', 'Logincounter: '+ counter +'');
+    console.log(counter);
+    if(isNumeric(counter)){
+      $.cookie('loginCounter', 'Logincounter: '+ counter +'');
+    }
   };
   
   function destroyCookieLoginCounter(){

@@ -19,7 +19,7 @@ if(isset($_SESSION['login']) == false){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.print.css" media="print" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.9/jquery.datetimepicker.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
@@ -28,10 +28,11 @@ if(isset($_SESSION['login']) == false){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.9/jquery.datetimepicker.min.js"></script>
     <script src="js/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
-    <script src="js/contacts.js"></script>
-    <script src="js/notes.js"></script>
-    <script src="js/tasks.js"></script>
-    <script src="js/calendar.js"></script>
+    <script src="js/contacts.min.js"></script>
+    <script src="js/notes.min.js"></script>
+    <script src="js/tasks.min.js"></script>
+    <script src="js/calendar.min.js"></script>
+    <title>MyOffice</title>
   </head>
   <header>
     <div id="header"> 

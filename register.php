@@ -29,6 +29,7 @@
     }else{
           $row = mysql_fetch_assoc($res);
           // Es existiert ein User
+          $_SESSION['sid'] = uniqid();
           $_SESSION['login'] = true;
           $_SESSION['email']  = $email;
           $_SESSION['password']  = $password;
@@ -41,9 +42,6 @@
           $sql_insert_user = "Insert into user (`firstname`, `lastname`, `gender`,`password`, `email`, `country` ,`sid`) VALUES ('".$firstname."','".$lastname."','".$gender."','".$password."','".$email."','".$country."','".$_SESSION['sid']."')";
       
           mysql_query($sql_insert_user) or die("PHP: SQL Query Error!");
-          // wir speicher die SESSION ID in der Datenbank
-          // $sql = "UPDATE user set sid = '".$_SESSION['sid']."' WHERE id = ".$row['id']."";
-          // mysql_query($sql) or die("SID konnte nicht gespeichert werden");
           echo "1";
       }
   }else{

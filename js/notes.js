@@ -62,7 +62,7 @@ jQuery(document).ready(function(){
         teaser = description;
       }
       dialogHTML += "<div id='dialog_n"+nid+"' class='dialog'><form><fieldset><label for='f_title"+nid+"'>Titel</label><input type='text' maxlength='40' name='title' id='f_title"+nid+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_description"+nid+"'>Beschreibung</label><br /><textarea name='note' id='f_description"+nid+"' type='text' maxlength='2000' cols='40' rows='15' class='text ui-widget-content ui-corner-all'>"+description+"</textarea></fieldset></form></div>"; 
-      notePanelContentHTML += "<div class='portlet'><div class='portlet-header'><button id='btn_editNote"+nid+"' data-id='#dialog_n"+nid+"' class='opener btn_edit notes'>*</button><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button><div>"+title_teaser+"</div></div><div class='portlet-content'>"+teaser+"</div></div>"
+      notePanelContentHTML += "<div class='portlet'><div class='portlet-header'>#"+counter+"<button id='btn_editNote"+nid+"' data-id='#dialog_n"+nid+"' class='opener btn_edit notes'>*</button><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button><div>"+title_teaser+"</div></div><div class='portlet-content'>"+teaser+"</div></div>"
       counter++;                                                             
     };
     jQuery(".column").append(notePanelContentHTML);

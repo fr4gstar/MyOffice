@@ -3,7 +3,7 @@
   if(isset($_SESSION['login']) == false){
     die("Du bist nicht eingeloggt");
   }else{
-      if(isset($_GET['firstname']) AND isset($_GET['lastname']) AND isset($_GET['firm']) AND isset($_GET['email']) AND isset($_GET['tel']) AND isset($_GET['note']) OR (strlen($_GET['firstname']) > 0) OR (strlen($_GET['lastname']) > 0) OR (strlen($_GET['firm']) > 0) OR (strlen($_GET['email']) > 0) OR (strlen($_GET['tel']) > 0)) {
+      if(isset($_GET['firstname']) AND isset($_GET['lastname']) AND isset($_GET['firm']) AND isset($_GET['email']) AND isset($_GET['tel']) AND isset($_GET['note']) AND ((strlen($_GET['firstname']) > 0) OR (strlen($_GET['lastname']) > 0) OR (strlen($_GET['firm']) > 0) OR (strlen($_GET['email']) > 0) OR (strlen($_GET['tel']) > 0)) AND ((strlen($_GET['firstname']) <= 40) AND (strlen($_GET['lastname']) <= 40) AND (strlen($_GET['firm']) <= 40) AND (strlen($_GET['email']) <= 40) AND (strlen($_GET['tel']) <= 40) AND (strlen($_GET['note']) <= 2000))) {
         $firstname = mysql_real_escape_string($_GET['firstname']);
         $lastname = mysql_real_escape_string($_GET['lastname']);
         $firm = mysql_real_escape_string($_GET['firm']);

@@ -3,11 +3,11 @@
   if(isset($_SESSION['login']) == false){
     die("Du bist nicht eingeloggt");
   }else{
-      if(isset($_GET['title']) AND isset($_GET['description']) AND isset($_GET['start']) AND isset($_GET['end'])) {
+      if(isset($_GET['title']) AND isset($_GET['description']) AND isset($_GET['start']) AND isset($_GET['end']) AND ($_GET['start'] < $_GET['end']) AND (strlen($_GET['title']) > 0) AND (strlen($_GET['start']) > 0) AND (strlen($_GET['end']) > 0) AND (strlen($_GET['title']) <= 40) AND (strlen($_GET['description']) <= 2000) AND (strlen($_GET['start']) < 40) AND (strlen($_GET['end']) <40 )) {
         $title = mysql_real_escape_string($_GET['title']);
         $description = mysql_real_escape_string($_GET['description']);
         $start = mysql_real_escape_string($_GET['start']);
-        $end = mysql_real_escape_string($_GET['end']);
+        $end = mysql_real_escape_string($_GET['end']);        
         $conn = mysql_connect("localhost", "root", "");
           if(!$conn)
             die("Verbindung zur DB kann nicht hergestellt werden!");

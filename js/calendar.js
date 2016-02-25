@@ -1,7 +1,7 @@
-jQuery(document).ready(function(){
+$(document).ready(function(){
   var event = [];
-  jQuery.datetimepicker.setLocale('de');
-  jQuery("#calendar").append("<div id='fullcal'><div>");
+  $.datetimepicker.setLocale('de');
+  $("#calendar").append("<div id='fullcal'><div>");
   $("#fullcal").fullCalendar({
       dayClick: function(date, jsEvent, view) {
         $('#createEventDialog').dialog({
@@ -11,26 +11,40 @@ jQuery(document).ready(function(){
           modal: true,
           title: "Event erstellen",
           open: function(){
-            jQuery("#createEventStart").val(date);
-            jQuery("#createEventEnd").val(date);
-            jQuery("#createEventStart").datetimepicker({
-                  startDate: new Date()
-            });
-            jQuery("#createEventEnd").datetimepicker({
-                  startDate: date
-            });   
+            if($.type(date) == "object"){
+              date = date.format();
+              $("#createEventStart").datetimepicker({
+                    startDate: new Date(date +" "+"10:00")
+              });
+              $("#createEventEnd").datetimepicker({
+                    startDate: new Date(date+" "+"11:00")
+              });
+              $("#createEventStart").val(date +" "+"10:00");
+              $("#createEventEnd").val(date+" "+"11:00");
+            }   
           }, 
           buttons: {
               "Erstellen": function(){
                   createEvent();
-                  $('#createEventDialog').dialog('close');
-                  }
+                  $('#createEventDialog').dialog('close');  
+                }
                },                                                
                close: function() {
                }
         });
         $('#createEventDialog').dialog('open');
-        jQuery("#createEventTitle").val('Neues Event');  
+        $("#createEventTitle").val('Neues Event');
+        if($.type(date) == "object"){
+          date = date.format();
+          $("#createEventStart").datetimepicker({
+                startDate: new Date(date +" "+"10:00")
+          });
+          $("#createEventEnd").datetimepicker({
+                startDate: new Date(date+" "+"11:00")
+          });
+          $("#createEventStart").val(date +" "+"10:00");
+          $("#createEventEnd").val(date+" "+"11:00");
+        }  
       },
       eventClick: function(calEvent, jsEvent, view) {
         var id = calEvent.id;
@@ -41,45 +55,54 @@ jQuery(document).ready(function(){
           modal: true,
           title: "Event #"+ id+" anpassen",
           open: function(){
-            jQuery("#e_start"+id).datetimepicker({
-                  startDate: calEvent.start
-            });
-            jQuery("#e_end"+id).datetimepicker({
-                  startDate: calEvent.end
-            });
-            jQuery("#e_start"+id).val(calEvent.start);
-            jQuery("#e_end"+id).val(calEvent.end);   
+            if($.type(calEvent) == "object"){
+              $("#e_start"+id).datetimepicker({
+                    startDate: calEvent.start
+              });
+              $("#e_end"+id).datetimepicker({
+                    startDate: calEvent.end
+              });
+              $("#e_start"+id).val(calEvent.start);
+              $("#e_end"+id).val(calEvent.end);
+            }   
           }, 
           buttons: {
               "Speichern": function(){
                   if(editEvent(id)){
-                    calEvent.remove;      
+                    calEvent.remove;    
                   }
                   $('#dialog_e'+id).dialog('close');
                 },
               "Entfernen": function(){
-                  jQuery.get("deleteCalendar.php",{
+                  $.get("deleteCalendar.php",{
                       eid : calEvent.id
                       },function(data){
                         if(data == "1"){
                           $("#fullcal").fullCalendar('removeEvents', calEvent.id);
                           updateEvents();
-                          alert("Kontakt erfolgreich erstellt!");
-                          console.log("Create contact successfull!");
+                          alert("Event erfolgreich erstellt!");
+                          console.log("Delete event successfull!");
                         }else{
-                          alert("Kontakt konnte nicht erstellt werden!");
-                          console.log("ERROR: Create contact successfull!");
+                          alert("Event konnte nicht erstellt werden!");
+                          console.log("ERROR: Delete event failed!");
                         }
-                       $('#dialog_e'+id).dialog('close');                         
+                       $('#dialog_e'+id).dialog('close');
+                       initOverviewData(data);                         
                     });
                   }
                },  
                close: function() {
                }
         });
-        //jQuery("#e_start"+id).datetimepicker();
-        //jQuery("#e_end"+id).datetimepicker();
         $('#dialog_e'+id).dialog('open');
+        $("#e_start"+id).datetimepicker({
+          startDate: calEvent.start
+        });
+        $("#e_end"+id).datetimepicker({
+          startDate: calEvent.end
+        });
+        $("#e_start"+id).val(calEvent.start);
+        $("#e_end"+id).val(calEvent.end);
       },
       weekends: true,
       aspectRatio: 2,
@@ -99,8 +122,12 @@ jQuery(document).ready(function(){
   });
 
   function createEvent(date){
+    var tempStart = new Date($("#createEventStart").val());
+    var tempEnd = new Date($("#createEventEnd").val());
     if(!$("#createEventTitle").val() && !$("#createEventStart").val() && !$("#createEventEnd").val()){
       alert("Bitte mindestens Titel, Start- und Enddatum (und Zeit) angeben!");
+    }else if(tempStart >= tempEnd){
+      alert("Das Ende muss nach dem Startzeitpunkt angegeben werden!");  
     }else{
       $.get("createCalendar.php",{
         title : $("#createEventTitle").val(),
@@ -117,6 +144,7 @@ jQuery(document).ready(function(){
         if(data == "1"){
           updateEvent(event);
           $("#fullcal").fullCalendar('renderEvent', event);
+          $("#createEventDescription").val('');
           alert("Event erfolgreich erstellt!");
           console.log("Add event successfull!");
           return true;
@@ -145,7 +173,7 @@ jQuery(document).ready(function(){
         description : $("#e_description"+eventID).val(),
         start : $("#e_start"+eventID).val(),
         end : $("#e_end"+eventID).val()
-        },function(data){
+        },function(data){        
         var tempEvent = {
           eid : eventID,
           title : $("#e_title"+eventID).val(),
@@ -161,7 +189,7 @@ jQuery(document).ready(function(){
           console.log("Edit event successfull!");
           return true;
         }else{
-          updateEvents();
+          //updateEvents();
           alert("Event konnte nicht angepasst werden!");
           console.log("ERROR: Edit event failed!");
           return false;
@@ -174,29 +202,109 @@ jQuery(document).ready(function(){
     $.get("calendar.php",{},function(data){
       $("#ov_events").empty();
       createEvents(data);
-      //$("#fullcal").fullCalendar('rerenderEvents');
+      initOverviewData(data);
       console.log("Update events successfull!");  
     });  
   };
   
   function updateEvent(event){
     $.get("calendar.php",{},function(data){
-      $("#ov_events").empty();
       var id = event.eid;
       var title = event.title;
       var description = event.description;
       var start = event.start;
       var end = event.end;
+      if($("#dialog_e"+id).length){
+        $("#dialog_e"+id).remove();
+      }
       $("#fullcal").append(
         "<div id='dialog_e"+id+"' class='dialog'><form><fieldset><label for='e_title"+id+"'>Title</label><input type='text' name='start' id='e_title"+id+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='e_start"+id+"'>Start</label><input type='text' name='start' id='e_start"+id+"' value='"+start+"' class='text ui-widget-content ui-corner-all'><br /><label for='e_end"+id+"'>Ende</label><input type='text' name='end' id='e_end"+id+"' value='"+end+"' class='text ui-widget-content ui-corner-all'><br /><label for='e_description"+id+"'>Beschreibung</label><br /><textarea name='note' id='e_description"+id+"' type='text' cols='40' rows='7' class='text ui-widget-content ui-corner-all'>"+description+"</textarea></fieldset></form></div>"    
       );
-      createEvents(data);
+      initOverviewData(data);
+      
+      var dueTime = Math.round((new Date(start) - new Date()) / 1000 / 60 / 60);
+      var sign = "";
+      var addOverviewHtml = "";
+      var descTeaser = "";
+      if(dueTime < 72 && dueTime > 0){  
+        if(((new Date(start) - new Date()) / 1000 / 60 / 60) < dueTime){
+          sign = "<";
+        }else{
+          sign = ">";
+        }
+        if(description.toString().length > 100){
+          descTeaser = description.toString().substring(0, 100);
+          descTeaser += "...";
+        }else{
+          descTeaser = description;
+        }  
+        addOverviewHtml += "<tr><td>"+sign+""+dueTime+"h</td><td>"+title+"</td><td>"+descTeaser+"</td><td>"+start+"</td><td>"+end+"</td></tr>";
+      }
+      $("#ov_eventTable").append(addOverviewHtml);
       console.log("Update events successfull!");  
     });  
   };
+  
+  function initOverviewData(json){
+      // init event data for overview
+      var lastEvent = Object.keys(json).length;
+      lastEvent = lastEvent - 1;
+      var overviewHtml = "";
+      var descTeaser = "";
+      if(lastEvent < 10){
+        for(var i = 0;i < lastEvent ; i++){
+          var title = json[lastEvent]['title']; 
+          var description = json[lastEvent]['description'];
+          var start = json[lastEvent]['start'];
+          var end = json[lastEvent]['end'];
+          var dueTime = Math.round((new Date(start) - new Date()) / 1000 / 60 / 60);
+          var sign = "";
+          if(dueTime < 72 && dueTime > 0){  
+            if(((new Date(start) - new Date()) / 1000 / 60 / 60) < dueTime){
+              sign = "<";
+            }else{
+              sign = ">";
+            }
+            if(description.toString().length > 100){
+              descTeaser = description.toString().substring(0, 100);
+              descTeaser += "...";
+            }else{
+              descTeaser = description;
+            }  
+            overviewHtml += "<tr><td>"+sign+""+dueTime+"h</td><td>"+title+"</td><td>"+descTeaser+"</td><td>"+start+"</td><td>"+end+"</td></tr>";
+          } 
+          lastEvent--;
+        };
+      }else{
+        for(var i = 0;i < 10 ; i++){
+          var title = json[lastEvent]['title']; 
+          var description = json[lastEvent]['description'];
+          var start = json[lastEvent]['start'];
+          var end = json[lastEvent]['end'];
+          var dueTime = Math.round((new Date(start) - new Date()) / 1000 / 60 / 60);
+          var sign = "";
+          if(dueTime < 72 && dueTime > 0){
+            if(((new Date(start) - new Date()) / 1000 / 60 / 60) < dueTime){
+              sign = "<";
+            }else{
+              sign = ">";
+            }
+            if(description.toString().length > 100){
+              descTeaser = description.toString().substring(0, 100);
+              descTeaser += "...";
+            }else{
+              descTeaser = description;
+            }  
+            overviewHtml += "<tr><td>"+sign+""+dueTime+"h</td><td>"+title+"</td><td>"+descTeaser+"</td><td>"+start+"</td><td>"+end+"</td></tr>";
+          }
+          lastEvent--;
+        };
+      }
+      $("#ov_eventTable").append(overviewHtml);
+  };
           
   function createEvents(data){
-      $("#ov_events").append("<table id='ov_eventTable' href='#'><tr><th>F&auml;llig in</th><th>Titel</th><th>Beschreibung</th><th>Start</th><th>Ende</th></tr></table>");
+      $("#ov_events").append("<table id='ov_eventTable' href='#'><tr><th>F&auml;llig in</th><th>Titel</th><th>Beschreibung</th><th>Start</th><th>Ende</th></tr></table>"); 
       var json = $.parseJSON(data);
       var counter = 0;
       var dialogHTML = "";
@@ -223,62 +331,6 @@ jQuery(document).ready(function(){
           counter ++;
         };
       $("#fullcal").append(dialogHTML);
-     
-      // init event data for overview
-      // TODO: auf die bevorstehenden Events umschreiben!!!!!!!
-      var lastEvent = Object.keys(json).length;
-      lastEvent = lastEvent - 1;
-      var overviewHtml = "";
-      var descTeaser = "";
-      if(lastEvent < 10){
-        for(var i = 0;i < lastEvent ; i++){
-          var title = json[lastEvent]['title']; 
-          var description = json[lastEvent]['description'];
-          var start = json[lastEvent]['start'];
-          var end = json[lastEvent]['end'];
-          var dueTime = Math.round((new Date(start) - new Date()) / 1000 / 60 / 60);
-          var sign = "";
-          if(dueTime < 72){  
-            if(((new Date(start) - new Date()) / 1000 / 60 / 60) < dueTime){
-              sign = "<";
-            }else{
-              sign = ">";
-            }
-            if(description.toString().length > 100){
-              descTeaser = description.toString().substring(0, 100);
-              descTeaser += "...";
-            }else{
-              descTeaser = description;
-            }  
-            overviewHtml += "<tr><td></td><td>"+title+"</td><td>"+descTeaser+"</td><td>"+start+"</td><td>"+end+"</td></tr>";
-          } 
-          lastEvent--;
-        };
-      }else{
-        for(var i = 0;i < 10 ; i++){
-          var title = json[lastEvent]['title']; 
-          var description = json[lastEvent]['description'];
-          var start = json[lastEvent]['start'];
-          var end = json[lastEvent]['end'];
-          var dueTime = Math.round((new Date(start) - new Date()) / 1000 / 60 / 60);
-          var sign = "";
-          if(dueTime < 72){
-            if(((new Date(start) - new Date()) / 1000 / 60 / 60) < dueTime){
-              sign = "<";
-            }else{
-              sign = ">";
-            }
-            if(description.toString().length > 100){
-              descTeaser = description.toString().substring(0, 100);
-              descTeaser += "...";
-            }else{
-              descTeaser = description;
-            }  
-            overviewHtml += "<tr><td>"+sign+""+dueTime+"h</td><td>"+title+"</td><td>"+descTeaser+"</td><td>"+start+"</td><td>"+end+"</td></tr>";
-          }
-          lastEvent--;
-        };
-      }
-      $("#ov_eventTable").append(overviewHtml);
+      initOverviewData(json);
   };       
 });

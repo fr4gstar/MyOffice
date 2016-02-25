@@ -2,6 +2,15 @@ table,th,td {
   border: 1px solid black;	
 }
 
+body{
+  font-size: 15px;
+}
+
+input {
+  width: 175px;
+  float: none;
+}
+
 th {
   background-color: grey;
   color: white;
@@ -149,8 +158,8 @@ textarea {
 .btn_delete.notes  {
   background-color: red;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   margin: 0px;
   float: left;
   font-size: 10px;  
@@ -158,11 +167,15 @@ textarea {
 .btn_edit.notes  {
   background-color: blue;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   margin: 0px;
   float: left;
   font-size: 10px;  
+}
+
+.portlet-content, .portlet-header  {
+  font-size: 15px;
 }
 
 .opener {
