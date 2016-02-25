@@ -6,10 +6,12 @@
     <script src="js/register.js" type="text/javascript"></script>
     <script src="js/jquery.cookie.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
     <meta http-equiv="expires" content="0">
     <meta name="robots" content="index" />
+    <meta name="title" content="MyOffice">
     <meta name="description" content="Office Web-Application with Contacts, Calendar, Task-Manager and Notes" />
-    <meta charset="UTF-8" />
+    <link rel="canonical" href="http://localhost/myoffice" />
   </head>
   
   <header>My Office - Web Anwendung</header>

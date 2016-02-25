@@ -14,7 +14,7 @@ th {
   width:200px;
   border: 2px solid black;
   background-color: green;
-  overflow: auto;  
+  overflow: none;  
 }
 
 #reg_mask {
@@ -23,7 +23,7 @@ th {
   float:left; width:200px;
   border: 2px solid black;
   background-color: blue;
-  overflow: auto;
+  overflow: none;
 }
 
 button {
@@ -53,9 +53,12 @@ article {
 
 #logout {
   float:right;
-  width:50px;
+  width:60px;
   height: 20px;
   margin:3px;
+  background-color: #993300;
+  color: white;
+  border:2px solid black;
 }
 
 #tabs_contacts{
@@ -120,7 +123,7 @@ ov_line {
 }
 
 #ov_events {
-  float: none;
+  float: left;
 }
 
 .ov_header {
@@ -131,6 +134,7 @@ ov_line {
   border: 2px solid black;
   background-color: #3594ff;
   color: white;
+  float: left;
 }
 
 textarea {
@@ -142,8 +146,17 @@ textarea {
   color: white;  
 }
 
-.btn_delete.notes {
+.btn_delete.notes  {
   background-color: red;
+  color: white;
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+  float: left;
+  font-size: 10px;  
+}
+.btn_edit.notes  {
+  background-color: blue;
   color: white;
   width: 20px;
   height: 20px;
@@ -176,6 +189,7 @@ textarea {
 
 .dialog {
   overflow: hidden;
+  display: none;
 }
 
 #ov_contactTable {

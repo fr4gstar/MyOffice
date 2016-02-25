@@ -23,7 +23,8 @@ jQuery(document).ready(function(){
   function updateNotes(){
     jQuery.get("Notes.php",{},function(data){
       jQuery("#showNotes").empty();
-      jQuery("#ov_noteTable").empty();
+      jQuery("#ov_notes").empty();
+      //$(".opener").click(false);
       createNotes(data);
       console.log("Update notes successfull!");  
     });  
@@ -34,9 +35,14 @@ jQuery(document).ready(function(){
     var dialogHTML = "";
     var notePanelContentHTML = "";
     // show notes tab
-      jQuery("#showNotes").append(
-        "<div id='notesPanel'></div>"
-      );
+    jQuery("#showNotes").append(
+      "<div id='notesPanel'></div>"
+    );
+    jQuery("#notesPanel").append(
+      "<div class='column'></div>"
+    );
+    // init table for overview
+    jQuery("#ov_notes").append("Notizen<table id='ov_noteTable' href='#'><tr><th>Titel</th><th>Beschreibung</th></tr></table>");  
     while(json[counter]){
       var nid = json[counter][counter][0];
       var title = json[counter][counter][1];
@@ -55,11 +61,11 @@ jQuery(document).ready(function(){
       }else{
         teaser = description;
       }
-      dialogHTML += "<div id='dialog_n"+nid+"' class='dialog'><form><fieldset><label for='f_title'>Titel</label><input type='text' name='title' id='f_title"+nid+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='note'>Beschreibung</label><br /><textarea name='note' id='f_description"+nid+"' type='text' cols='40' rows='15' class='text ui-widget-content ui-corner-all'>"+description+"</textarea><input type='submit' tabindex='-1' style='position:absolute; top:-1000px'></fieldset></form></div>"; 
-      notePanelContentHTML += "<div class='column'><div class='portlet'><div class='portlet-header'><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button><div class='opener' data-id='#dialog_n"+nid+"'>"+title_teaser+"</div></div><div class='portlet-content'>"+teaser+"</div></div></div>"
+      dialogHTML += "<div id='dialog_n"+nid+"' class='dialog'><form><fieldset><label for='f_title"+nid+"'>Titel</label><input type='text' maxlength='40' name='title' id='f_title"+nid+"' value='"+title+"' class='text ui-widget-content ui-corner-all'><br /><label for='f_description"+nid+"'>Beschreibung</label><br /><textarea name='note' id='f_description"+nid+"' type='text' maxlength='2000' cols='40' rows='15' class='text ui-widget-content ui-corner-all'>"+description+"</textarea></fieldset></form></div>"; 
+      notePanelContentHTML += "<div class='portlet'><div class='portlet-header'><button id='btn_editNote"+nid+"' data-id='#dialog_n"+nid+"' class='opener btn_edit notes'>*</button><button id='btn_deleteNote"+nid+"' class='btn_delete notes'>-</button><div>"+title_teaser+"</div></div><div class='portlet-content'>"+teaser+"</div></div>"
       counter++;                                                             
     };
-    jQuery("#notesPanel").append(notePanelContentHTML);
+    jQuery(".column").append(notePanelContentHTML);
     jQuery("#showNotes").append(dialogHTML);
     counter = 1;
     // init delete note
@@ -87,21 +93,12 @@ jQuery(document).ready(function(){
         $( ".column" ).sortable({
           connectWith: ".column",
           handle: ".portlet-header",
-          cancel: ".portlet-toggle",
           placeholder: "portlet-placeholder ui-corner-all"
         });
         $( ".portlet" )
           .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
           .find( ".portlet-header" )
-            .addClass( "ui-widget-header ui-corner-all" )
-            //.prepend ("<button id='btn_deleteNote' class='btn_delete notes'>-</button>")
-            //.prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>")
-            ;
-        $( ".portlet-toggle" ).click(function() {
-          var icon = $( this );
-          icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
-          icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-        });
+            .addClass( "ui-widget-header ui-corner-all" );
       }
     );
     // init dialog forms
@@ -110,23 +107,26 @@ jQuery(document).ready(function(){
     }); 
     $(".opener").click(function () {
       var id = $(this).data('id');
-      var nid = id.toString().substring(9, id.toString().length);
-      $(".dialog").dialog({
-        autoOpen: false,
-        height: 600,
-        width: 700,
-        modal: true,
-        title: "Notiz anpassen", 
-        buttons: {
-            "Speichern": function(){
-                editNote(nid);
-                $(".dialog").dialog('close');
-                }
-             },
-             close: function() {
-             }
-      });
-      $(id).dialog("open");
+      var type = id.toString().substring(8, 9);
+      if(type == "n"){
+        var nid = id.toString().substring(9, id.toString().length);
+        $(id).dialog({
+          autoOpen: false,
+          height: 600,
+          width: 700,
+          modal: true,
+          title: "Notiz anpassen", 
+          buttons: {
+              "Speichern": function(){
+                  editNote(nid);
+                  $(id).dialog('close');
+                  }
+               },
+               close: function() {
+               }
+        });
+        $(id).dialog("open");
+      }
     });
     // init note data for overview
     var lastNote = Object.keys(json).length;
@@ -168,7 +168,7 @@ jQuery(document).ready(function(){
         createNotes(data);
         // create note tab
         jQuery("#createNote").append(
-          "Titel<input id='title' type='text'><br/>Beschreibung<br/><textarea id='description' type='text' cols='40' rows='15'></textarea><br/><button id='btn_createNote' class='btn_add'>Notiz erstellen</button>"          
+          "Titel<input id='title' maxlength='40' type='text'><br/>Beschreibung<br/><textarea id='description' type='text' maxlength='2000' cols='40' rows='15'></textarea><br/><button id='btn_createNote' class='btn_add'>Notiz erstellen</button>"          
         );
         jQuery("#btn_createNote").click(function(){
           if(!jQuery("#title").val()){

@@ -1,0 +1,4 @@
+# robots.txt zu http://localhost/myoffice
+User-agent: *
+Disallow: /
+Allow:    /index.php
