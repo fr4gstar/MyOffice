@@ -6,3 +6,6 @@ Features:
 - Calendar
 - Task Management
 - Register/Login
+
+Try/Install:
+Install XAMPP or some other webserver application and publish this project on it.
